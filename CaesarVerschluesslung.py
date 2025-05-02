@@ -1,46 +1,56 @@
 def caesar_verschluesselung(text: str, verschiebung: int) -> str:
     """
-    Verschlüsselt einen Text mithilfe des Caesar-Verschlüsselungsverfahrens.
+    Verschlüsselt einen Text mit dem Caesar-Verschlüsselungsverfahren.
     
-    :param text: Der zu verschlüsselnde Text
-    :param verschiebung: Anzahl der Stellen, um die jeder Buchstabe verschoben wird
-    :return: Der verschlüsselte Text
+    :param text: Der zu verarbeitende Text
+    :param verschiebung: Die Anzahl der Buchstaben, um die verschoben wird
+    :return: Der verschlüsselte (oder entschlüsselte) Text
     """
-    verschluesselt = ''
-    
+    ergebnis = ''
+
     for zeichen in text:
-        # Prüfen, ob das Zeichen ein Buchstabe ist
         if zeichen.isalpha():
-            # ASCII-Wert des Zeichens um die Verschiebung erhöhen
             verschoben = ord(zeichen) + verschiebung
 
-            # Verarbeitung für Kleinbuchstaben
             if zeichen.islower():
                 if verschoben > ord('z'):
                     verschoben -= 26
                 elif verschoben < ord('a'):
                     verschoben += 26
-
-            # Verarbeitung für Großbuchstaben
             elif zeichen.isupper():
                 if verschoben > ord('Z'):
                     verschoben -= 26
                 elif verschoben < ord('A'):
                     verschoben += 26
 
-            # In verschlüsselten Text hinzufügen
-            verschluesselt += chr(verschoben)
+            ergebnis += chr(verschoben)
         else:
-            # Nicht-Buchstaben unverändert übernehmen
-            verschluesselt += zeichen
+            # Sonderzeichen, Zahlen und Leerzeichen bleiben gleich
+            ergebnis += zeichen
 
-    return verschluesselt
+    return ergebnis
 
 
-# Benutzereingaben
-text = input("Gib einen Text ein: ")
-verschiebung = int(input("Gib die Verschiebung ein (z. B. 3 oder -3): "))
+# --- Hauptprogramm ---
+def main():
+    # Benutzerwahl: Verschlüsselung oder Entschlüsselung
+    modus = input("Möchtest du (v)erschlüsseln oder (e)ntschlüsseln? ").lower()
 
-# Verschlüsselung ausführen und Ergebnis ausgeben
-verschluesselter_text = caesar_verschluesselung(text, verschiebung)
-print("Verschlüsselter Text:", verschluesselter_text)
+    if modus not in ['v', 'e']:
+        print("Ungültige Auswahl. Bitte 'v' oder 'e' eingeben.")
+        return
+
+    text = input("Gib den Text ein: ")
+    verschiebung = int(input("Gib die Verschiebung ein (z. B. 3 oder -3): "))
+
+    # Bei Entschlüsselung Verschiebung invertieren
+    if modus == 'e':
+        verschiebung = -verschiebung
+
+    ergebnis_text = caesar_verschluesselung(text, verschiebung)
+    print("Ergebnis:", ergebnis_text)
+
+
+# Nur ausführen, wenn das Skript direkt gestartet wird
+if __name__ == "__main__":
+    main()
